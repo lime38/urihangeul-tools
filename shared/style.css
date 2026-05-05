@@ -1,0 +1,345 @@
+/* =============================================
+   우리한글 한글 도구 통합 CSS
+   배경 #222222 다크 기준 | 18개 도구
+   ============================================= */
+
+/* ── 1. 리셋 ── */
+.tool, .tool * { box-sizing: border-box; margin: 0; padding: 0 }
+
+/* ── 2. 기본 ── */
+.tool {
+  font-family: 'Noto Sans KR', sans-serif;
+  max-width: 640px;
+  padding: 24px;
+  color: #e8e8e8;
+}
+.tool h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f0f0f0;
+}
+.tool > p {
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 16px;
+}
+
+/* ── 3. 입력 ── */
+.tool textarea,
+.tool input[type=text] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #2a2a2a;
+  color: #e8e8e8;
+}
+.tool textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+.tool textarea::placeholder,
+.tool input[type=text]::placeholder { color: #888 }
+
+.tool input[type=number] {
+  width: 64px;
+  padding: 8px 10px;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #2a2a2a;
+  color: #e8e8e8;
+  text-align: center;
+}
+.tool input[type=number]::placeholder { color: #888 }
+
+.tool select {
+  padding: 12px;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #2a2a2a;
+  color: #e8e8e8;
+}
+
+/* ── 4. 버튼 ── */
+.tool .btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.tool button,
+.tool button.main {
+  background: #7a9ec0;
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+.tool button:hover,
+.tool button.main:hover { background: #8db3d4 }
+.tool button.sec {
+  background: #2e2e2e;
+  color: #ccc;
+  border: 1px solid #444;
+  font-weight: 400;
+}
+.tool button.sec:hover { background: #383838 }
+
+/* ── 5. 탭 (모드 전환 / 원고지 타입) ── */
+.tool .tabs { display: flex; gap: 6px; margin-bottom: 16px }
+.tool .tab,
+.tool .opt {
+  padding: 8px 20px;
+  border: 1px solid #444;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #2e2e2e;
+  color: #888;
+  transition: all .15s;
+}
+.tool .tab.on,
+.tool .opt.on {
+  background: #e8e8e8;
+  color: #222;
+  border-color: #e8e8e8;
+  font-weight: 600;
+}
+.tool .tab:hover:not(.on),
+.tool .opt:hover:not(.on) { background: #383838; color: #ccc }
+
+/* ── 6. 전통단위변환기 카테고리 탭 ── */
+.tool .cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.tool .cats button {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #444;
+  background: #2e2e2e;
+  color: #888;
+  font-size: 13px;
+  font-weight: 400;
+}
+.tool .cats button.active {
+  background: #e8e8e8;
+  color: #222;
+  border-color: #e8e8e8;
+  font-weight: 600;
+}
+
+/* ── 7. 옵션 패널 (체크박스) ── */
+.tool .opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+.tool .opts-title {
+  font-size: 11px;
+  color: #7a9ec0;
+  margin-bottom: 2px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+.tool label {
+  font-size: 13px;
+  color: #ddd;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 3px 0;
+}
+.tool label input[type=checkbox] {
+  width: 15px;
+  height: 15px;
+  accent-color: #7a9ec0;
+  flex-shrink: 0;
+}
+.tool .divider { height: 1px; background: #404040; margin: 4px 0 }
+
+/* ── 8. 행 입력 (찾기·바꾸기, 구분자) ── */
+.tool .row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.tool .row > label {
+  font-size: 13px;
+  color: #aaa;
+  white-space: nowrap;
+  min-width: 52px;
+  padding: 0;
+}
+.tool .row input[type=text] { width: auto; flex: 1 }
+.tool .row small { font-size: 12px; color: #666 }
+
+/* ── 9. 결과 영역 — div형 ── */
+.tool .result-wrap {
+  margin-top: 16px;
+  background: #2e2e2e;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.tool .result-label,
+.tool .out-label {
+  font-size: 11px;
+  color: #7a9ec0;
+  margin-bottom: 6px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+.tool .result {
+  min-height: 32px;
+  word-break: break-all;
+  color: #f0f0f0;
+  line-height: 1.6;
+  font-size: 16px;
+}
+.tool .result.placeholder {
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+  letter-spacing: 0;
+}
+
+/* ── 10. 결과 영역 — textarea형 ── */
+.tool .out-wrap { margin-top: 16px }
+.tool #out {
+  background: #2e2e2e;
+  border-color: #383838;
+  color: #e8e8e8;
+}
+
+/* ── 11. 통계 카드 ── */
+.tool .stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+.tool .stat2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.tool .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+.tool .stat {
+  background: #2e2e2e;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+.tool .stat .num { font-weight: 700; color: #f0f0f0 }
+.tool .stat .label { font-size: 12px; color: #777; margin-top: 4px }
+
+/* ── 12. 안내 텍스트 ── */
+.tool .info { font-size: 13px; color: #888; margin-top: 8px; min-height: 18px }
+.tool .note { font-size: 12px; color: #666; margin-top: 10px }
+
+/* ── 13. 가독성 분석기 전용 ── */
+.tool .detail {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 2;
+  color: #ccc;
+}
+.tool .legend {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #2e2e2e;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #aaa;
+}
+.tool .legend .lh { font-size: 13px; color: #666; margin-bottom: 4px }
+
+/* ── 14. 반복 단어 찾기 전용 ── */
+.tool .word-tag {
+  display: inline-flex;
+  align-items: center;
+  background: #2e2e2e;
+  border-radius: 16px;
+  padding: 4px 12px;
+  margin: 3px;
+  font-size: 14px;
+  gap: 4px;
+  color: #e8e8e8;
+}
+.tool .word-tag .cnt { color: #7a9ec0; font-size: 12px }
+
+/* ── 15. 단어 빈도 분석기 전용 ── */
+.tool .freq-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid #383838;
+  font-size: 14px;
+  color: #e8e8e8;
+}
+.tool .freq-word { min-width: 80px; font-weight: 500; color: #f0f0f0 }
+.tool .freq-bar {
+  flex: 1;
+  height: 10px;
+  background: #383838;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.tool .freq-fill {
+  height: 100%;
+  background: #7a9ec0;
+  border-radius: 6px;
+  transition: width .3s;
+}
+.tool .freq-cnt { min-width: 40px; text-align: right; color: #777; font-size: 13px }
+
+/* ── 16. 글자 반복 제거기 — threshold ── */
+.tool .threshold {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #ddd;
+  padding: 2px 0;
+}
+
+/* ── 17. 도구별 크기 오버라이드 ── */
+
+/* 어절·문장 수 세기: 큰 숫자 */
+.tool .stats .stat .num { font-size: 26px }
+
+/* 원고지 계산기: 더 큰 숫자 + 여백 */
+.tool .result .stat { padding: 20px }
+.tool .result .stat .num { font-size: 32px }
+.tool .result .stat .label { font-size: 13px }
+
+/* 가독성 분석기: stat 숫자 */
+.tool .grid .stat .num { font-size: 20px }
+.tool .grid .stat .label { font-size: 13px }
+
+/* 숫자 한글 변환기: 큰 결과 텍스트 → 해당 HTML에 직접 지정 */
+
+/* 자모 분리기: 자모 간격 */
+/* → 각 tool HTML의 .result에 letter-spacing 유지 권장 */
