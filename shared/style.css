@@ -9,8 +9,8 @@
 /* ── 2. 기본 ── */
 .tool {
   font-family: 'Noto Sans KR', sans-serif;
-  max-width: 640px;
-  padding: 24px;
+  max-width: 100%;
+  padding: 5px;
   color: #e8e8e8;
 }
 .tool h2 {
@@ -30,7 +30,6 @@
 .tool input[type=text] {
   width: 100%;
   padding: 12px;
-  border: 1px solid #3d3d3d;
   border-radius: 6px;
   font-size: 14px;
   line-height: 1.6;
@@ -42,7 +41,7 @@
   min-height: 120px;
 }
 .tool textarea::placeholder,
-.tool input[type=text]::placeholder { color: #888 }
+.tool input[type=text]::placeholder { color: #e5e5e5 }
 
 .tool input[type=number] {
   width: 64px;
@@ -74,17 +73,18 @@
 }
 .tool button,
 .tool button.main {
-  background: #7a9ec0;
+  background: #31568f;
   color: #fff;
   border: none;
   padding: 9px 18px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
+  min-width: 90px;
   font-weight: 600;
 }
 .tool button:hover,
-.tool button.main:hover { background: #8db3d4 }
+.tool button.main:hover { background: #6885b3 }
 .tool button.sec {
   background: #2e2e2e;
   color: #ccc;
@@ -116,7 +116,7 @@
 .tool .tab:hover:not(.on),
 .tool .opt:hover:not(.on) { background: #383838; color: #ccc }
 
-/* ── 6. 전통단위변환기 카테고리 탭 ── */
+/* ── 6. 단위변환기 카테고리 탭 ── */
 .tool .cats {
   display: flex;
   flex-wrap: wrap;
@@ -147,14 +147,14 @@
   margin: 12px 0;
 }
 .tool .opts-title {
-  font-size: 11px;
+  font-size: 15px;
   color: #7a9ec0;
   margin-bottom: 2px;
   font-weight: 600;
   letter-spacing: .04em;
 }
 .tool label {
-  font-size: 13px;
+  font-size: 15px;
   color: #ddd;
   display: flex;
   align-items: center;
@@ -175,7 +175,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin: 8px 0;
   flex-wrap: wrap;
 }
 .tool .row > label {
@@ -190,15 +190,15 @@
 
 /* ── 9. 결과 영역 — div형 ── */
 .tool .result-wrap {
-  margin-top: 16px;
-  background: #2e2e2e;
+  margin: 16px 0;
+  background: #273d60;
   border-radius: 8px;
   padding: 16px 18px;
 }
 .tool .result-label,
 .tool .out-label {
-  font-size: 11px;
-  color: #7a9ec0;
+  font-size: 15px;
+  color: #a9c5df;
   margin-bottom: 6px;
   font-weight: 600;
   letter-spacing: .04em;
@@ -207,21 +207,21 @@
   min-height: 32px;
   word-break: break-all;
   color: #f0f0f0;
+  margin: 10px 0;
   line-height: 1.6;
   font-size: 16px;
 }
 .tool .result.placeholder {
   font-size: 14px;
   font-weight: 400;
-  color: #555;
+  color: #dfdfdf;
   letter-spacing: 0;
 }
 
 /* ── 10. 결과 영역 — textarea형 ── */
-.tool .out-wrap { margin-top: 16px }
+.tool .out-wrap { margin: 10px 0 }
 .tool #out {
-  background: #2e2e2e;
-  border-color: #383838;
+  background: #273d60;
   color: #e8e8e8;
 }
 
@@ -245,17 +245,17 @@
   margin-top: 16px;
 }
 .tool .stat {
-  background: #2e2e2e;
+  background: #273d60;
   border-radius: 8px;
   padding: 14px;
   text-align: center;
 }
-.tool .stat .num { font-weight: 700; color: #f0f0f0 }
-.tool .stat .label { font-size: 12px; color: #777; margin-top: 4px }
+.tool .stat .num { font-size:20px;font-weight: 700; color: #f0f0f0 }
+.tool .stat .label { font-size: 14px; color: #9bd0ef; margin-top: 4px }
 
 /* ── 12. 안내 텍스트 ── */
 .tool .info { font-size: 13px; color: #888; margin-top: 8px; min-height: 18px }
-.tool .note { font-size: 12px; color: #666; margin-top: 10px }
+.tool .note { font-size: 14px; color: #f1a8a8; margin-top: 10px }
 
 /* ── 13. 가독성 분석기 전용 ── */
 .tool .detail {
@@ -273,7 +273,7 @@
   line-height: 1.9;
   color: #aaa;
 }
-.tool .legend .lh { font-size: 13px; color: #666; margin-bottom: 4px }
+.tool .legend .lh { font-size: 13px; color: #ff6b6b; margin-bottom: 0px }
 
 /* ── 14. 반복 단어 찾기 전용 ── */
 .tool .word-tag {
@@ -313,7 +313,7 @@
   border-radius: 6px;
   transition: width .3s;
 }
-.tool .freq-cnt { min-width: 40px; text-align: right; color: #777; font-size: 13px }
+.tool .freq-cnt { min-width: 40px; text-align: right; color: #bed8f1; font-size: 13px }
 
 /* ── 16. 글자 반복 제거기 — threshold ── */
 .tool .threshold {
@@ -335,7 +335,7 @@
 .tool .result .stat .num { font-size: 32px }
 .tool .result .stat .label { font-size: 13px }
 
-/* 가독성 분석기: stat 숫자 */
+/* 가독성 분기: stat 숫자 */
 .tool .grid .stat .num { font-size: 20px }
 .tool .grid .stat .label { font-size: 13px }
 
