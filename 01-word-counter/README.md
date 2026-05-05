@@ -31,4 +31,3 @@ MIT — 코드 헤더의 출처 표시 유지를 권장합니다.
 ---
 
 📖 **상세 가이드**: [우리한글 도구 카테고리](https://urihangeul.com/category/tools/korean-tools/)
-🚀 **AI 기반 정밀 한국어 교정**: [우리한글 프로](https://urihangeul.com)

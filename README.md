@@ -2,7 +2,7 @@
 
 > **한국어 처리 실용 웹 도구 모음** — 글자 수 세기, 자모 분리, 로마자 표기, 한영 타자 변환 등 18개
 
-[![우리한글 블로그](https://img.shields.io/badge/blog-urihangeul.com-1f6feb)](https://urihangeul.com)
+[![우리한글](https://img.shields.io/badge/site-urihangeul.com-1f6feb)](https://urihangeul.com)
 [![도구 카테고리](https://img.shields.io/badge/도구-카테고리-brightgreen)](https://urihangeul.com/category/tools/korean-tools/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -12,7 +12,7 @@
 
 ➜ **[우리한글 — 도구 카테고리](https://urihangeul.com/category/tools/korean-tools/)**
 
-각 도구는 우리한글 블로그에서 설치 없이 즉시 실행 가능합니다.
+각 도구는 우리한글 홈페이지에서 설치 없이 즉시 실행 가능합니다.
 
 ## 📋 도구 리스트
 
@@ -37,7 +37,7 @@
 | 17 | 특수문자 제거기 | 이모지·URL·해시태그 정리 | 준비 중 |
 | 18 | 단어 빈도 분석기 | 단어 빈도 + 막대 그래프 | 준비 중 |
 
-> 매일 1개씩 추가 공개 중입니다. 전체 카탈로그는 [블로그 카테고리](https://urihangeul.com/category/tools/korean-tools/) 참고.
+> 매일 1개씩 추가 공개 중입니다. 전체 카탈로그는 [도구 카테고리](https://urihangeul.com/category/tools/korean-tools/) 참고.
 
 ## 🛠 로컬에서 실행
 
@@ -62,25 +62,14 @@ urihangeul-tools/
     └── style.css         ← 18개 공통 다크 팔레트
 ```
 
-## ✨ 다음 단계 — 우리한글 프로
-
-18개 도구는 시작입니다. **AI 기반 정밀 한국어 맞춤법·표현 교정 서비스 *우리한글 프로*** 가 곧 공개됩니다.
-
-- 어문규정 기반 자동/제안 교정
-- 의미 분기 사용자 선택형 팝업
-- 사례 검색 기반 설명 생성
-
-➜ 사전 안내 / 베타 신청: **[urihangeul.com](https://urihangeul.com)**
-
 ## 📜 라이선스
 
-[MIT](LICENSE) — 자유롭게 가져다 쓰셔도 됩니다. 코드 파일 상단의 헤더 주석(출처·블로그 링크)은 유지해 주시면 감사하겠습니다.
+[MIT](LICENSE) — 자유롭게 가져다 쓰셔도 됩니다. 코드 파일 상단의 헤더 주석(출처·홈페이지 링크)은 유지해 주시면 감사하겠습니다.
 
 ## 🔗 관련 링크
 
+- 우리한글 홈페이지: https://urihangeul.com
 - 도구 카테고리: https://urihangeul.com/category/tools/korean-tools/
-- 우리한글 프로: https://urihangeul.com
-- 블로그 (한글 맞춤법·도구·언어 콘텐츠): https://urihangeul.com
 
 ---
 
