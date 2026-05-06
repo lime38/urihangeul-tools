@@ -30,4 +30,4 @@ MIT — 코드 헤더의 출처 표시 유지를 권장합니다.
 
 ---
 
-📖 **상세 가이드**: [우리한글 도구 카테고리](https://urihangeul.com/category/tools/korean-tools/)
+📖 도구별 상세 사용 가이드는 [가이드 카테고리](https://urihangeul.com/category/tools/guide/)에서 차례로 공개됩니다.
