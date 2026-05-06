@@ -19,7 +19,7 @@
 | # | 도구 | 설명 |
 |---|---|---|
 | 01 | [글자 수 세기](https://urihangeul.com/word-counter/) | 글자/어절/문장/단락 수 동시 표시 |
-| 02 | 원고지 계산기 | 원고지 매수 환산 |
+| 02 | [원고지 계산기](https://urihangeul.com/manuscript-paper-calculator/) | 200자/400자/600자 원고지 매수 환산 |
 | 03 | 자모 분리기 | 한글 → 초성/중성/종성 분해 |
 | 04 | 공백 정리기 | 중복 공백/줄바꿈 정리 |
 | 05 | 초성 추출기 | 초성만 뽑아내기 |
@@ -55,11 +55,12 @@ cd urihangeul-tools/01-word-counter
 urihangeul-tools/
 ├── README.md
 ├── LICENSE
-├── 01-word-counter/      ← 글자 수 세기
+├── 01-word-counter/                  ← 글자 수 세기
+├── 02-manuscript-paper-calculator/   ← 원고지 계산기
 │   ├── index.html
 │   └── README.md
 └── shared/
-    └── style.css         ← 18개 공통 다크 팔레트
+    └── style.css                     ← 18개 공통 다크 팔레트
 ```
 
 ## 📜 라이선스

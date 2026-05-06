@@ -1,0 +1,52 @@
+<!--
+  Project: 우리한글 도구 — 원고지 계산기 (Manuscript Paper Calculator)
+  Tool page: https://urihangeul.com/manuscript-paper-calculator/
+  Category: https://urihangeul.com/category/tools/korean-tools/
+  Author: 우리한글 (https://urihangeul.com)
+  License: MIT
+
+  이 코드를 사용할 때 본 헤더 주석을 유지해 주시면 감사하겠습니다.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>원고지 계산기 — 우리한글 도구</title>
+<meta name="description" content="입력한 텍스트가 200자/400자/600자 원고지 기준으로 몇 매인지 자동 계산하는 무료 온라인 도구.">
+<link rel="canonical" href="https://urihangeul.com/manuscript-paper-calculator/">
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<h2>원고지 계산기</h2>
+<p>입력한 텍스트가 몇 매 분량인지 계산합니다.</p>
+<div class="tool">
+  <textarea style="resize:none;min-height:250px;" id="inp" placeholder="문구를 입력해 보세요." oninput="msCalc()"></textarea>
+  <div class="opts">
+    <div class="opt on" onclick="msSetType(200,this)">200자 원고지</div>
+    <div class="opt" onclick="msSetType(400,this)">400자 원고지</div>
+    <div class="opt" onclick="msSetType(600,this)">600자 원고지</div>
+  </div>
+  <div class="result">
+    <div class="stat">
+      <div class="num" id="pages">0</div>
+      <div class="label" id="page_label">매 (200자 원고지 기준)</div>
+    </div>
+    <div class="detail" id="detail"></div>
+  </div>
+</div>
+<p style="margin-top:24px;color:#888;font-size:14px">
+  웹에서 바로 사용하기: <a href="https://urihangeul.com/manuscript-paper-calculator/" style="color:#9cf">우리한글 — 원고지 계산기</a>
+</p>
+<script data-cfasync="false">
+/*
+ * 우리한글 — 원고지 계산기 (https://urihangeul.com/manuscript-paper-calculator/)
+ * License: MIT
+ */
+let pageSize=200;
+function msSetType(n,el){ pageSize=n; document.querySelectorAll('.opt').forEach(o=>o.classList.remove('on')); el.classList.add('on'); document.getElementById('page_label').textContent=`매 (${n}자 원고지 기준)`; msCalc(); }
+function msCalc(){ const t=document.getElementById('inp').value; const len=t.replace(/\s/g,'').length; const pages=len===0?0:(len/pageSize); const full=Math.floor(pages); const remain=Math.round((pages-full)*pageSize); document.getElementById('pages').textContent=pages===0?'0':pages.toFixed(1); document.getElementById('detail').innerHTML=len===0?'': `총 글자 수 (공백 제외): <b>${len}자</b><br>`+ `${pageSize}자 원고지: 약 <b>${full}매 ${remain}칸</b>`; }
+msCalc();
+</script>
+</body>
+</html>
