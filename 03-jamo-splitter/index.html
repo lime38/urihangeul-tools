@@ -1,0 +1,120 @@
+<!--
+  Project: 우리한글 도구 — 자모 분리기 (Jamo Splitter)
+  Tool page: https://urihangeul.com/jamo-splitter/
+  Category: https://urihangeul.com/category/tools/korean-tools/
+  Author: 우리한글 (https://urihangeul.com)
+  License: MIT
+
+  이 코드를 사용할 때 본 헤더 주석을 유지해 주시면 감사하겠습니다.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자모 분리기 — 우리한글 도구</title>
+<meta name="description" content="한글 음절을 초성/중성/종성 자모로 분리하거나, 낱낱의 자모를 다시 음절로 결합하는 무료 온라인 도구.">
+<link rel="canonical" href="https://urihangeul.com/jamo-splitter/">
+<link rel="stylesheet" href="../shared/style.css">
+<style>.tool .result{letter-spacing:3px;line-height:2}</style>
+</head>
+<body>
+<h2>자모 분리기</h2>
+<p>한글 음절을 초성/중성/종성 자모로 분리하거나, 자모를 다시 음절로 결합합니다. 겹받침도 자동 분해.</p>
+<div class="tool">
+  <div class="tabs">
+    <div class="tab on" onclick="setMode('split',this)">분리 (음절→자모)</div>
+    <div class="tab" onclick="setMode('join',this)">결합 (자모→음절)</div>
+  </div>
+  <textarea style="resize:none;min-height:250px;" id="inp" placeholder="음절 텍스트를 입력하세요"></textarea>
+  <div class="btns">
+    <button onclick="runConvert()">변환</button>
+    <button class="sec" id="copy_btn" onclick="runCopy()">복사</button>
+    <button class="sec" onclick="runClear()">초기화</button>
+  </div>
+  <div class="result-wrap">
+    <div class="result-label">변환 결과</div>
+    <div class="result placeholder" id="out">결과가 여기에 표시됩니다</div>
+  </div>
+</div>
+<p style="margin-top:24px;color:#888;font-size:14px">
+  웹에서 바로 사용하기: <a href="https://urihangeul.com/jamo-splitter/" style="color:#9cf">우리한글 — 자모 분리기</a>
+</p>
+<script>
+/*
+ * 우리한글 — 자모 분리기 (https://urihangeul.com/jamo-splitter/)
+ * License: MIT
+ */
+const CHO=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JUNG=['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+const JONG=['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JONG_DECOMP={'ㄳ':'ㄱㅅ','ㄵ':'ㄴㅈ','ㄶ':'ㄴㅎ','ㄺ':'ㄹㄱ','ㄻ':'ㄹㅁ','ㄼ':'ㄹㅂ','ㄽ':'ㄹㅅ','ㄾ':'ㄹㅌ','ㄿ':'ㄹㅍ','ㅀ':'ㄹㅎ','ㅄ':'ㅂㅅ'};
+const CHO_IDX={};CHO.forEach((c,i)=>CHO_IDX[c]=i);
+const JUNG_IDX={};JUNG.forEach((v,i)=>JUNG_IDX[v]=i);
+const JONG_IDX={};JONG.forEach((j,i)=>JONG_IDX[j]=i);
+let mode='split';
+function setMode(m,el){
+  mode=m;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('inp').placeholder=m==='split'?'음절 텍스트를 입력하세요':'자모 텍스트를 입력하세요';
+}
+function splitJamo(text){
+  let result='';
+  for(const ch of text){
+    const code=ch.charCodeAt(0);
+    if(code>=0xAC00&&code<=0xD7A3){
+      const idx=code-0xAC00;
+      const c=CHO[Math.floor(idx/28/21)];
+      const v=JUNG[Math.floor(idx/28)%21];
+      const j=JONG[idx%28];
+      result+=c+v+(j?JONG_DECOMP[j]||j:'');
+    } else result+=ch;
+  }
+  return result;
+}
+function joinJamo(text){
+  const chars=[...text];
+  let result='';
+  let i=0;
+  while(i<chars.length){
+    const ch=chars[i];
+    if(CHO_IDX[ch]!==undefined&&i+1<chars.length&&JUNG_IDX[chars[i+1]]!==undefined){
+      const ci=CHO_IDX[ch],vi=JUNG_IDX[chars[i+1]];
+      let ji=0;
+      if(i+2<chars.length&&JONG_IDX[chars[i+2]]!==undefined&&chars[i+2]!==''){
+        if(i+3>=chars.length||JUNG_IDX[chars[i+3]]===undefined){
+          ji=JONG_IDX[chars[i+2]];i+=3;
+        } else {i+=2;}
+      } else {i+=2;}
+      result+=String.fromCharCode(0xAC00+ci*21*28+vi*28+ji);
+    } else {result+=ch;i++;}
+  }
+  return result;
+}
+function setOut(txt,ph){
+  const el=document.getElementById('out');
+  el.textContent=txt;
+  ph?el.classList.add('placeholder'):el.classList.remove('placeholder');
+}
+function runConvert(){
+  const t=document.getElementById('inp').value;
+  if(!t.trim()){setOut('텍스트를 입력해 주세요.',true);return;}
+  setOut(mode==='split'?splitJamo(t):joinJamo(t),false);
+}
+function runCopy(){
+  const val=document.getElementById('out').textContent;
+  const el=document.createElement('textarea');
+  el.value=val;el.style.position='fixed';el.style.opacity='0';
+  document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+  const btn=document.getElementById('copy_btn');
+  btn.textContent='복사 완료!';
+  setTimeout(()=>{btn.textContent='복사';},1500);
+}
+function runClear(){
+  document.getElementById('inp').value='';
+  setOut('결과가 여기에 표시됩니다',true);
+}
+</script>
+</body>
+</html>
