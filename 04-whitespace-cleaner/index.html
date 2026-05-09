@@ -1,0 +1,94 @@
+<!--
+  Project: 우리한글 도구 — 공백 정리기 (Whitespace Cleaner)
+  Tool page: https://urihangeul.com/whitespace-cleaner/
+  Category: https://urihangeul.com/category/tools/korean-tools/
+  Author: 우리한글 (https://urihangeul.com)
+  License: MIT
+
+  이 코드를 사용할 때 본 헤더 주석을 유지해 주시면 감사하겠습니다.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공백 정리기 — 우리한글 도구</title>
+<meta name="description" content="웹페이지/PDF/문서에서 복사한 글의 연속 공백·빈 줄·앞뒤 공백을 한 번에 정리하는 무료 온라인 도구.">
+<link rel="canonical" href="https://urihangeul.com/whitespace-cleaner/">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.tool .opts{background:#2e2e2e;padding:14px 16px 14px 30px;border-radius:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin:12px 0}
+.tool .opts-title{grid-column:1/-1;font-weight:700;color:#9cf}
+.tool .divider{grid-column:1/-1;border-top:1px solid #444;margin:6px 0}
+.tool .opts label{display:flex;align-items:center;gap:6px;color:#ddd}
+.tool .out-wrap{margin-top:14px}
+.tool .out-label{color:#9cf;font-weight:700;margin-bottom:6px}
+</style>
+</head>
+<body>
+<h2>공백 정리기</h2>
+<p>연속 공백·빈 줄·앞뒤 공백을 한 번에 정리합니다. 모든 줄바꿈 제거, 빈 줄 삭제 등 옵션 제공.</p>
+<div class="tool">
+  <textarea style="resize:none;min-height:250px;" id="inp" placeholder="정리할 문구를 입력해 보세요."></textarea>
+  <div class="opts">
+    <div class="opts-title">기본 정리</div>
+    <label><input type="checkbox" id="trim_lines" checked> 각 줄 앞뒤 공백 제거</label>
+    <label><input type="checkbox" id="multi_space" checked> 연속 공백 하나로</label>
+    <label><input type="checkbox" id="multi_line" checked> 연속 빈 줄 하나로</label>
+    <div class="divider"></div>
+    <div class="opts-title">추가 옵션</div>
+    <label><input type="checkbox" id="remove_all_line"> 모든 줄바꿈 제거 (한 줄로)</label>
+    <label><input type="checkbox" id="remove_blank"> 빈 줄 모두 제거</label>
+  </div>
+  <div class="btns">
+    <button onclick="runClean()">정리</button>
+    <button class="sec" id="copy_btn" onclick="runCopy()">복사</button>
+    <button class="sec" onclick="runClear()">초기화</button>
+  </div>
+  <div class="out-wrap">
+    <div class="out-label">정리 결과</div>
+    <textarea style="resize:none;min-height:250px;" id="out" placeholder="정리 결과가 여기에 표시됩니다." readonly></textarea>
+  </div>
+</div>
+<p style="margin-top:24px;color:#888;font-size:14px">
+  웹에서 바로 사용하기: <a href="https://urihangeul.com/whitespace-cleaner/" style="color:#9cf">우리한글 — 공백 정리기</a>
+</p>
+<script>
+/*
+ * 우리한글 — 공백 정리기 (https://urihangeul.com/whitespace-cleaner/)
+ * License: MIT
+ */
+function runClean(){
+  let t = document.getElementById('inp').value;
+  if (!t.trim()) {
+    document.getElementById('out').value = '텍스트를 입력해 주세요.';
+    return;
+  }
+  if (document.getElementById('trim_lines').checked) t = t.split('\n').map(l => l.trim()).join('\n');
+  if (document.getElementById('multi_space').checked) t = t.replace(/[ \t]+/g, ' ');
+  if (document.getElementById('remove_all_line').checked) {
+    t = t.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+  } else if (document.getElementById('remove_blank').checked) {
+    t = t.split('\n').filter(l => l.trim() !== '').join('\n');
+  } else if (document.getElementById('multi_line').checked) {
+    t = t.replace(/\n{3,}/g, '\n\n');
+  }
+  document.getElementById('out').value = t.trim();
+}
+function runCopy(){
+  const val = document.getElementById('out').value;
+  if (!val) return;
+  const el = document.createElement('textarea');
+  el.value = val; el.style.position = 'fixed'; el.style.opacity = '0';
+  document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+  const btn = document.getElementById('copy_btn');
+  btn.textContent = '복사 완료!';
+  setTimeout(() => { btn.textContent = '복사'; }, 1500);
+}
+function runClear(){
+  document.getElementById('inp').value = '';
+  document.getElementById('out').value = '';
+}
+</script>
+</body>
+</html>

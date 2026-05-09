@@ -21,7 +21,7 @@
 | 01 | [글자 수 세기](https://urihangeul.com/word-counter/) | 글자/어절/문장/단락 수 동시 표시 |
 | 02 | [원고지 계산기](https://urihangeul.com/manuscript-paper-calculator/) | 200자/400자/600자 원고지 매수 환산 |
 | 03 | [자모 분리기](https://urihangeul.com/jamo-splitter/) | 한글 → 초성/중성/종성 분해 |
-| 04 | 공백 정리기 | 중복 공백/줄바꿈 정리 |
+| 04 | [공백 정리기](https://urihangeul.com/whitespace-cleaner/) | 중복 공백/줄바꿈 정리 |
 | 05 | 초성 추출기 | 초성만 뽑아내기 |
 | 06 | 로마자 표기 변환기 | 한글 → 로마자 표기법 적용 |
 | 07 | 글자 반복 제거기 | 연속 반복 글자 정리 |
@@ -58,6 +58,7 @@ urihangeul-tools/
 ├── 01-word-counter/                  ← 글자 수 세기
 ├── 02-manuscript-paper-calculator/   ← 원고지 계산기
 ├── 03-jamo-splitter/                 ← 자모 분리기
+├── 04-whitespace-cleaner/            ← 공백 정리기
 │   ├── index.html
 │   └── README.md
 └── shared/
