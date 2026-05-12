@@ -23,8 +23,8 @@
 | 03 | [자모 분리기](https://urihangeul.com/jamo-splitter/) | 한글 → 초성/중성/종성 분해 |
 | 04 | [공백 정리기](https://urihangeul.com/whitespace-cleaner/) | 중복 공백/줄바꿈 정리 |
 | 05 | [초성 추출기](https://urihangeul.com/chosung-extractor/) | 초성만 뽑아내기 |
-| 06 | 로마자 표기 변환기 | 한글 → 로마자 표기법 적용 |
-| 07 | 글자 반복 제거기 | 연속 반복 글자 정리 |
+| 06 | [로마자 표기 변환기](https://urihangeul.com/romanization-converter/) | 국립국어원 표기법(2000) 기준 한글 → 영문 |
+| 07 | [글자 반복 제거기](https://urihangeul.com/character-repeat-remover/) | 연속 반복 글자 정리 |
 | 08 | 한영 타자 변환기 | 한↔영 키 매핑 변환 |
 | 09 | 줄 정렬기 | 가나다/역순/중복 제거 |
 | 10 | 찾아 바꾸기 | 정규식 지원 텍스트 치환 |
@@ -60,7 +60,9 @@ urihangeul-tools/
 ├── 03-jamo-splitter/                 ← 자모 분리기
 ├── 04-whitespace-cleaner/            ← 공백 정리기
 ├── 05-chosung-extractor/             ← 초성 추출기
-│   ├── index.html
+├── 06-romanization-converter/        ← 로마자 표기 변환기
+├── 07-character-repeat-remover/      ← 글자 반복 제거기
+│   ├── index.html                    (각 도구 디렉터리 구조 동일)
 │   └── README.md
 └── shared/
     └── style.css                     ← 18개 공통 다크 팔레트

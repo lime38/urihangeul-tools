@@ -1,0 +1,84 @@
+<!--
+  Project: 우리한글 도구 — 로마자 표기 변환기 (Romanization Converter)
+  Tool page: https://urihangeul.com/romanization-converter/
+  Category: https://urihangeul.com/category/tools/korean-tools/
+  Author: 우리한글 (https://urihangeul.com)
+  License: MIT
+
+  이 코드를 사용할 때 본 헤더 주석을 유지해 주시면 감사하겠습니다.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로마자 표기 변환기 — 우리한글 도구</title>
+<meta name="description" content="국립국어원 로마자 표기법(2000년 고시)에 따라 한국어를 영문으로 변환하는 무료 온라인 도구. 이름·지명·주소 영문 표기에 사용.">
+<link rel="canonical" href="https://urihangeul.com/romanization-converter/">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.tool .result{letter-spacing:.5px}
+.tool .note{color:#888;font-size:13px;margin-top:10px}
+</style>
+</head>
+<body>
+<h2>로마자 표기 변환기</h2>
+<p>국립국어원 로마자 표기법(2000년 고시)에 따라 한국어를 영문으로 변환합니다. 여권·명함·주소 영문 표기, 한국 인명·지명의 공식 로마자 표기 확인에 사용.</p>
+<div class="tool">
+  <input type="text" id="roma_inp" placeholder="한국어를 입력하세요 (예: 서울, 홍길동)">
+  <div class="btns">
+    <button onclick="romaConvert()">변환</button>
+    <button class="sec" id="roma_copy" onclick="romaCopy()">복사</button>
+    <button class="sec" onclick="romaClear()">초기화</button>
+  </div>
+  <div class="result-wrap">
+    <div class="result-label">변환 결과</div>
+    <div class="result" id="roma_out">변환 결과가 여기에 표시됩니다.</div>
+  </div>
+  <p class="note">※ 받침 소리가 다음 음절로(=연음)·구개음화 등 일부 음운 규칙은 단순화됐을 수 있습니다.</p>
+</div>
+<p style="margin-top:24px;color:#888;font-size:14px">
+  웹에서 바로 사용하기: <a href="https://urihangeul.com/romanization-converter/" style="color:#9cf">우리한글 — 로마자 표기 변환기</a>
+</p>
+<script>
+/*
+ * 우리한글 — 로마자 표기 변환기 (https://urihangeul.com/romanization-converter/)
+ * License: MIT
+ */
+const RC=['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+const RV=['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+const RJ=['','k','k','k','n','n','n','t','l','k','m','p','l','l','p','l','m','p','p','t','t','ng','t','t','k','t','p','t'];
+function romaD(c){
+  if(c<0xAC00||c>0xD7A3)return null;
+  const i=c-0xAC00;
+  return{c:Math.floor(i/588),v:Math.floor(i/28)%21,j:i%28};
+}
+function romaConvert(){
+  const t=document.getElementById('roma_inp').value;
+  const o=document.getElementById('roma_out');
+  if(!t.trim()){o.textContent='텍스트를 입력해 주세요.';return;}
+  let r='';
+  for(let i=0;i<t.length;i++){
+    const d=romaD(t.charCodeAt(i));
+    if(!d){r+=t[i];}
+    else{r+=RC[d.c]+RV[d.v]+(d.j?RJ[d.j]:'');}
+  }
+  o.textContent=r;
+}
+function romaCopy(){
+  const v=document.getElementById('roma_out').textContent;
+  if(!v)return;
+  const e=document.createElement('textarea');
+  e.value=v;e.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(e);e.select();document.execCommand('copy');document.body.removeChild(e);
+  const b=document.getElementById('roma_copy');
+  b.textContent='복사 완료!';
+  setTimeout(()=>{b.textContent='복사';},1500);
+}
+function romaClear(){
+  document.getElementById('roma_inp').value='';
+  document.getElementById('roma_out').textContent='변환 결과가 여기에 표시됩니다.';
+}
+</script>
+</body>
+</html>
