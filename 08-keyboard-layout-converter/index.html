@@ -1,0 +1,78 @@
+<!--
+  Project: 우리한글 도구 — 한영 타자 변환기 (Keyboard Layout Converter)
+  Tool page: https://urihangeul.com/keyboard-layout-converter/
+  Category: https://urihangeul.com/category/tools/korean-tools/
+  Author: 우리한글 (https://urihangeul.com)
+  License: MIT
+
+  이 코드를 사용할 때 본 헤더 주석을 유지해 주시면 감사하겠습니다.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한영 타자 변환기 — 우리한글 도구</title>
+<meta name="description" content="한글/영문 입력 모드를 착각하고 잘못 입력한 텍스트를 자동으로 한글↔영문 변환하는 무료 온라인 도구. 두벌식 기준 양방향.">
+<link rel="canonical" href="https://urihangeul.com/keyboard-layout-converter/">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.tool .tabs{display:flex;gap:0;margin-bottom:14px}
+.tool .tab{flex:1;padding:10px;text-align:center;background:#2e2e2e;color:#888;cursor:pointer;border-radius:6px 6px 0 0;transition:all .2s}
+.tool .tab.on{background:#1e1e1e;color:#9cf;font-weight:700}
+.tool .result{font-size:15px}
+</style>
+</head>
+<body>
+<h2>한영 타자 변환기</h2>
+<p>한글/영문 입력 모드를 착각하고 잘못 입력한 텍스트를 자동으로 변환합니다. 'dnflgksrmf' → '우리한글' 같은 양방향 변환. 두벌식 자판 기준.</p>
+<div class="tool">
+  <div class="tabs">
+    <div class="tab on" onclick="setMode('en2ko',this)">영→한 변환</div>
+    <div class="tab" onclick="setMode('ko2en',this)">한→영 변환</div>
+  </div>
+  <textarea style="resize:none;min-height:250px" id="inp" placeholder="영문으로 잘못 입력한 텍스트를 붙여넣으세요"></textarea>
+  <div class="btns">
+    <button onclick="runConvert()">변환</button>
+    <button class="sec" id="copy_btn" onclick="runCopy()">복사</button>
+    <button class="sec" onclick="runClear()">초기화</button>
+  </div>
+  <div class="result-wrap">
+    <div class="result-label">변환 결과</div>
+    <div class="result" id="out">변환 결과가 여기에 표시됩니다.</div>
+  </div>
+</div>
+<p style="margin-top:24px;color:#888;font-size:14px">
+  웹에서 바로 사용하기: <a href="https://urihangeul.com/keyboard-layout-converter/" style="color:#9cf">우리한글 — 한영 타자 변환기</a>
+</p>
+<script>
+/*
+ * 우리한글 — 한영 타자 변환기 (https://urihangeul.com/keyboard-layout-converter/)
+ * License: MIT
+ */
+const EN2KO={q:'ㅂ',Q:'ㅃ',w:'ㅈ',W:'ㅉ',e:'ㄷ',E:'ㄸ',r:'ㄱ',R:'ㄲ',t:'ㅅ',T:'ㅆ',y:'ㅛ',u:'ㅕ',i:'ㅣ',o:'ㅐ',O:'ㅒ',p:'ㅔ',P:'ㅖ',a:'ㅁ',s:'ㄴ',d:'ㅇ',f:'ㄹ',g:'ㅎ',h:'ㅗ',j:'ㅓ',k:'ㅏ',l:'ㅣ',z:'ㅋ',x:'ㅌ',c:'ㅊ',v:'ㅍ',b:'ㅠ',n:'ㅜ',m:'ㅡ'};
+const KO2EN={};
+Object.entries(EN2KO).forEach(([k,v])=>{if(!KO2EN[v])KO2EN[v]=k;});
+const CHO=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JUNG=['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+const JONG=['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JONG2CHO={'ㄱ':0,'ㄲ':1,'ㄴ':2,'ㄷ':3,'ㄹ':5,'ㅁ':6,'ㅂ':7,'ㅅ':9,'ㅆ':10,'ㅇ':11,'ㅈ':12,'ㅊ':14,'ㅋ':15,'ㅌ':16,'ㅍ':17,'ㅎ':18};
+const DBLVOWEL={'ㅗ':{'ㅏ':'ㅘ','ㅐ':'ㅙ','ㅣ':'ㅚ'},'ㅜ':{'ㅓ':'ㅝ','ㅔ':'ㅞ','ㅣ':'ㅟ'},'ㅡ':{'ㅣ':'ㅢ'}};
+const DBLCONG={'ㄱ':{'ㅅ':'ㄳ'},'ㄴ':{'ㅈ':'ㄵ','ㅎ':'ㄶ'},'ㄹ':{'ㄱ':'ㄺ','ㅁ':'ㄻ','ㅂ':'ㄼ','ㅅ':'ㄽ','ㅌ':'ㄾ','ㅍ':'ㄿ','ㅎ':'ㅀ'},'ㅂ':{'ㅅ':'ㅄ'}};
+function isVowel(j){return JUNG.includes(j);}
+function makeBlock(c,v,f){const ci=CHO.indexOf(c),vi=JUNG.indexOf(v),fi=JONG.indexOf(f||'');if(ci<0||vi<0||fi<0)return c+(v||'')+(f||'');return String.fromCharCode(0xAC00+ci*21*28+vi*28+fi);}
+function decompose(ch){const code=ch.charCodeAt(0);if(code<0xAC00||code>0xD7A3)return null;const idx=code-0xAC00;return{c:CHO[Math.floor(idx/28/21)],v:JUNG[Math.floor(idx/28)%21],j:JONG[idx%28]};}
+function convertEn2Ko(text){const jamos=[];for(const ch of text){jamos.push(EN2KO[ch]||ch);}return composeKorean(jamos);}
+function composeKorean(jamos){let result='';let cho=null,jung=null,jong=null,jong2=null;function emit(){if(cho===null)return;if(jung===null){result+=cho;}else if(jong===null){result+=makeBlock(cho,jung,'');}else if(jong2===null){result+=makeBlock(cho,jung,jong);}else{result+=makeBlock(cho,jung,DBLCONG[jong]&&DBLCONG[jong][jong2]?DBLCONG[jong][jong2]:jong);result+=jong2;}cho=jung=jong=jong2=null;}for(const j of jamos){if(!CHO.concat(JUNG).includes(j)){emit();result+=j;continue;}const isV=JUNG.includes(j);const isC=CHO.includes(j);if(cho===null&&jung===null){if(isC){cho=j;}else{result+='ㅇ';result+=j;}}else if(cho!==null&&jung===null){if(isV){jung=j;}else{emit();cho=j;}}else if(cho!==null&&jung!==null&&jong===null){if(isV){if(DBLVOWEL[jung]&&DBLVOWEL[jung][j]){jung=DBLVOWEL[jung][j];}else{emit();result+='ㅇ';result+=j;}}else{jong=j;}}else if(jong!==null&&jong2===null){if(isV){const co=JONG2CHO[jong]!==undefined?CHO[JONG2CHO[jong]]:jong;result+=makeBlock(cho,jung,'');cho=co;jung=j;jong=null;}else{if(DBLCONG[jong]&&DBLCONG[jong][j]){jong2=j;}else{emit();cho=j;}}}else if(jong2!==null){if(isV){const co=JONG2CHO[jong2]!==undefined?CHO[JONG2CHO[jong2]]:jong2;result+=makeBlock(cho,jung,jong);cho=co;jung=j;jong=jong2=null;}else{const compound=DBLCONG[jong]&&DBLCONG[jong][jong2]?DBLCONG[jong][jong2]:jong+jong2;result+=makeBlock(cho,jung,typeof compound==='string'&&compound.length===1?compound:jong);if(typeof compound==='string'&&compound.length>1)result+=jong2;cho=j;jung=jong=jong2=null;}}}if(cho!==null){if(jung===null)result+=cho;else if(jong===null)result+=makeBlock(cho,jung,'');else if(jong2===null)result+=makeBlock(cho,jung,jong);else{const compound=DBLCONG[jong]&&DBLCONG[jong][jong2]?DBLCONG[jong][jong2]:jong;result+=makeBlock(cho,jung,compound);}}return result;}
+const CPVOWEL={'ㅘ':'hk','ㅙ':'ho','ㅚ':'hl','ㅝ':'nj','ㅞ':'np','ㅟ':'nl','ㅢ':'ml'};
+const CPCONG={'ㄳ':'rt','ㄵ':'sw','ㄶ':'sg','ㄺ':'fr','ㄻ':'fa','ㄼ':'fq','ㄽ':'ft','ㄾ':'fx','ㄿ':'fv','ㅀ':'fg','ㅄ':'qt'};
+function jamo2en(j){return KO2EN[j]||CPVOWEL[j]||CPCONG[j]||j;}
+function ko2en(text){let result='';for(const ch of text){const d=decompose(ch);if(d){result+=jamo2en(d.c)+jamo2en(d.v)+(d.j?jamo2en(d.j):'');}else if(KO2EN[ch]){result+=KO2EN[ch];}else result+=ch;}return result;}
+let mode='en2ko';
+function setMode(m,el){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.getElementById('inp').placeholder=m==='en2ko'?'영문으로 잘못 입력한 텍스트를 붙여넣으세요':'한글로 잘못 입력한 텍스트를 붙여넣으세요';}
+function runConvert(){const txt=document.getElementById('inp').value;if(!txt.trim()){document.getElementById('out').textContent='텍스트를 입력해 주세요.';return;}document.getElementById('out').textContent=mode==='en2ko'?convertEn2Ko(txt):ko2en(txt);}
+function runCopy(){const val=document.getElementById('out').textContent;const el=document.createElement('textarea');el.value=val;el.style.position='fixed';el.style.opacity='0';document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);const btn=document.getElementById('copy_btn');btn.textContent='복사 완료!';setTimeout(()=>{btn.textContent='복사';},1500);}
+function runClear(){document.getElementById('inp').value='';document.getElementById('out').textContent='변환 결과가 여기에 표시됩니다.';}
+</script>
+</body>
+</html>
