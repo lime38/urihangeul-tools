@@ -1,0 +1,94 @@
+<!--
+  Project: 우리한글 도구 — 줄 정렬기 (Line Sorter)
+  Tool page: https://urihangeul.com/line-sorter/
+  Category: https://urihangeul.com/category/tools/korean-tools/
+  Author: 우리한글 (https://urihangeul.com)
+  License: MIT
+
+  이 코드를 사용할 때 본 헤더 주석을 유지해 주시면 감사하겠습니다.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>줄 정렬기 — 우리한글 도구</title>
+<meta name="description" content="텍스트의 각 줄을 가나다/알파벳 순으로 정렬하거나 역순/뒤집기로 정리하는 무료 온라인 도구. 중복 줄/빈 줄 제거 옵션 제공.">
+<link rel="canonical" href="https://urihangeul.com/line-sorter/">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.tool .opts{background:#2e2e2e;padding:14px 16px;border-radius:8px;margin:12px 0;display:flex;flex-direction:column;gap:8px}
+.tool .opts label{display:flex;align-items:center;gap:6px;color:#ddd}
+.tool .out-wrap{margin-top:14px}
+.tool .out-label{color:#9cf;font-weight:700;margin-bottom:6px}
+</style>
+</head>
+<body>
+<h2>줄 정렬기</h2>
+<p>한 줄에 하나씩 입력된 텍스트 목록을 가나다 순, 역순, 또는 위아래 뒤집기로 정렬합니다. 중복 줄/빈 줄 제거 옵션 제공.</p>
+<div class="tool">
+  <textarea style="resize:none;min-height:250px" id="inp" placeholder="정리할 문구를 입력해 보세요."></textarea>
+  <div class="opts">
+    <label><input type="checkbox" id="dedup"> 중복 줄 제거</label>
+    <label><input type="checkbox" id="trim_empty"> 빈 줄 제거</label>
+  </div>
+  <div class="btns">
+    <button onclick="runSort('asc')">가나다 순</button>
+    <button onclick="runSort('desc')">역순 정렬</button>
+    <button onclick="runReverse()">순서 뒤집기</button>
+    <button class="sec" id="copy_btn" onclick="runCopy()">복사</button>
+    <button class="sec" onclick="runClear()">초기화</button>
+  </div>
+  <div class="out-wrap">
+    <div class="out-label">정렬 결과</div>
+    <textarea style="resize:none;min-height:250px" id="out" placeholder="결과가 여기에 표시됩니다." readonly></textarea>
+  </div>
+</div>
+<p style="margin-top:24px;color:#888;font-size:14px">
+  웹에서 바로 사용하기: <a href="https://urihangeul.com/line-sorter/" style="color:#9cf">우리한글 — 줄 정렬기</a>
+</p>
+<script>
+/*
+ * 우리한글 — 줄 정렬기 (https://urihangeul.com/line-sorter/)
+ * License: MIT
+ */
+function getLines(){
+  let t=document.getElementById('inp').value;
+  let lines=t.split('\n');
+  if(document.getElementById('trim_empty').checked) lines=lines.filter(l=>l.trim()!=='');
+  if(document.getElementById('dedup').checked) lines=[...new Set(lines)];
+  return lines;
+}
+function runSort(dir){
+  const lines=getLines();
+  lines.sort((a,b)=>a.localeCompare(b,'ko'));
+  if(dir==='desc') lines.reverse();
+  document.getElementById('out').value=lines.join('\n');
+}
+function runReverse(){
+  const lines=getLines();
+  lines.reverse();
+  document.getElementById('out').value=lines.join('\n');
+}
+function runCopy(){
+  const val=document.getElementById('out').value;
+  if(!val) return;
+  const el=document.createElement('textarea');
+  el.value=val;
+  el.style.position='fixed';
+  el.style.opacity='0';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  const btn=document.getElementById('copy_btn');
+  btn.textContent='복사 완료!';
+  setTimeout(()=>{btn.textContent='복사';},1500);
+}
+function runClear(){
+  document.getElementById('inp').value='';
+  document.getElementById('out').value='';
+}
+</script>
+</body>
+</html>
