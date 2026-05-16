@@ -1,0 +1,104 @@
+<!--
+  Project: 우리한글 도구 — 찾아 바꾸기 (Text Replacer)
+  Tool page: https://urihangeul.com/text-replacer/
+  Category: https://urihangeul.com/category/tools/korean-tools/
+  Author: 우리한글 (https://urihangeul.com)
+  License: MIT
+
+  이 코드를 사용할 때 본 헤더 주석을 유지해 주시면 감사하겠습니다.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>찾아 바꾸기 — 우리한글 도구</title>
+<meta name="description" content="텍스트에서 특정 단어나 문구를 찾아 일괄 치환하는 무료 온라인 도구. 정규식·대소문자 구분 옵션 지원. 오탈자 일괄 수정/데이터 노이즈 제거에 유용.">
+<link rel="canonical" href="https://urihangeul.com/text-replacer/">
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+.tool .opts{background:#2e2e2e;padding:14px 16px;border-radius:8px;margin:12px 0;display:flex;flex-direction:column;gap:8px}
+.tool .opts label{display:flex;align-items:center;gap:6px;color:#ddd}
+.tool .out-wrap{margin-top:14px}
+.tool .out-label{color:#9cf;font-weight:700;margin-bottom:6px}
+</style>
+</head>
+<body>
+<h2>찾아 바꾸기</h2>
+<p>특정 단어나 문구를 찾아 일괄 치환합니다. 정규식·대소문자 구분 옵션 제공. 오탈자 일괄 수정/데이터 노이즈 제거에 유용.</p>
+<div class="tool">
+  <textarea style="resize:none;min-height:250px" id="inp" placeholder="정리할 문구를 입력해 보세요."></textarea>
+  <div style="margin-top:12px">
+    <div class="row"><label>찾기</label><input type="text" id="find" placeholder="찾을 텍스트"></div>
+    <div class="row"><label>바꾸기</label><input type="text" id="rep" placeholder="바꿀 텍스트 (비워두면 삭제)"></div>
+  </div>
+  <div class="opts">
+    <label><input type="checkbox" id="use_regex"> 정규식 사용</label>
+    <label><input type="checkbox" id="case_sens"> 대소문자 구분</label>
+  </div>
+  <div class="btns">
+    <button onclick="runReplace()">치환</button>
+    <button class="sec" id="copy_btn" onclick="runReplaceCopy()">복사</button>
+    <button class="sec" onclick="runReplaceClear()">초기화</button>
+  </div>
+  <div class="info" id="rep_cnt"></div>
+  <div class="out-wrap">
+    <div class="out-label">치환 결과</div>
+    <textarea style="resize:none;min-height:250px" id="out" placeholder="결과가 여기에 표시됩니다." readonly></textarea>
+  </div>
+</div>
+<p style="margin-top:24px;color:#888;font-size:14px">
+  웹에서 바로 사용하기: <a href="https://urihangeul.com/text-replacer/" style="color:#9cf">우리한글 — 찾아 바꾸기</a>
+</p>
+<script>
+/*
+ * 우리한글 — 찾아 바꾸기 (https://urihangeul.com/text-replacer/)
+ * License: MIT
+ */
+function runReplace(){
+  const t=document.getElementById('inp').value;
+  const find=document.getElementById('find').value;
+  const rep=document.getElementById('rep').value;
+  if(!find){
+    document.getElementById('rep_cnt').textContent='찾을 텍스트를 입력해 주세요.';
+    return;
+  }
+  const useRegex=document.getElementById('use_regex').checked;
+  const caseSens=document.getElementById('case_sens').checked;
+  const flags='g'+(caseSens?'':'i');
+  let rx;
+  try{
+    rx=new RegExp(useRegex?find:find.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),flags);
+  }catch(e){
+    document.getElementById('rep_cnt').textContent='정규식 오류: '+e.message;
+    return;
+  }
+  const matches=t.match(rx)||[];
+  document.getElementById('out').value=t.replace(rx,rep);
+  document.getElementById('rep_cnt').textContent=matches.length+'건 치환되었습니다.';
+}
+function runReplaceCopy(){
+  const val=document.getElementById('out').value;
+  if(!val) return;
+  const el=document.createElement('textarea');
+  el.value=val;
+  el.style.position='fixed';
+  el.style.opacity='0';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  const btn=document.getElementById('copy_btn');
+  btn.textContent='복사 완료!';
+  setTimeout(()=>{btn.textContent='복사';},1500);
+}
+function runReplaceClear(){
+  document.getElementById('inp').value='';
+  document.getElementById('out').value='';
+  document.getElementById('rep_cnt').textContent='';
+  document.getElementById('find').value='';
+  document.getElementById('rep').value='';
+}
+</script>
+</body>
+</html>

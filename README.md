@@ -27,7 +27,7 @@
 | 07 | [글자 반복 제거기](https://urihangeul.com/character-repeat-remover/) | 연속 반복 글자 정리 |
 | 08 | [한영 타자 변환기](https://urihangeul.com/keyboard-layout-converter/) | 두벌식 한↔영 키 매핑 양방향 변환 |
 | 09 | [줄 정렬기](https://urihangeul.com/line-sorter/) | 가나다/역순/중복 제거 |
-| 10 | 찾아 바꾸기 | 정규식 지원 텍스트 치환 |
+| 10 | [찾아 바꾸기](https://urihangeul.com/text-replacer/) | 정규식 지원 텍스트 치환 |
 | 11 | 구분자 변환기 | CSV ↔ 줄 단위 변환 |
 | 12 | 전통 단위 변환기 | 척/관/되 등 전통 단위 환산 |
 | 13 | 숫자 한글 변환기 | 숫자 ↔ 한글(만/억/조) 변환 |
@@ -64,6 +64,7 @@ urihangeul-tools/
 ├── 07-character-repeat-remover/      ← 글자 반복 제거기
 ├── 08-keyboard-layout-converter/     ← 한영 타자 변환기
 ├── 09-line-sorter/                   ← 줄 정렬기
+├── 10-text-replacer/                 ← 찾아 바꾸기
 │   ├── index.html                    (각 도구 디렉터리 구조 동일)
 │   └── README.md
 └── shared/
